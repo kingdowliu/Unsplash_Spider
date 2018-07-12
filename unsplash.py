@@ -2,7 +2,7 @@ import requests
 from urllib.parse import urlencode
 
 #需下载的图片的数量
-NUMBER_OF_PHOTO=1
+NUMBER_OF_PHOTO=100
 
 #初始信息
 base_url='https://unsplash.com/napi/photos?'
