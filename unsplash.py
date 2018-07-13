@@ -3,7 +3,7 @@ import requests
 from urllib.parse import urlencode
 
 #需下载的图片的数量
-NUMBER_OF_PHOTO=10
+NUMBER_OF_PHOTO=3
 
 #初始信息
 base_url='https://unsplash.com/napi/photos?'
@@ -27,30 +27,47 @@ def json_parse(page):
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         json = response.json()
-        photo_url_id = json[0].get('id')
-        photo_url_download = 'https://unsplash.com/photos/' + photo_url_id + '/download?force=true'
-        #获取重定向后的url
-        response1 = requests.get(photo_url_download, headers=headers, allow_redirects=False)
-        photo_url_download_true = response1.headers['Location']
-        return [photo_url_download_true,photo_url_id]
+        photo_url_download_true=[]
+        photo_id=[]
+        data=[]
+        for i in range(len(json)):
+            photo_url_id = json[i].get('id')
+            #print(photo_url_id)
+            photo_url_download = 'https://unsplash.com/photos/' + photo_url_id + '/download?force=true'
+            #获取重定向后的url
+            response1 = requests.get(photo_url_download, headers=headers, allow_redirects=False)
+            photo_url_download = response1.headers['Location']
+            photo_url_download_true.append(photo_url_download)
+            photo_id.append(photo_url_id)
+        data.append(photo_url_download_true)
+        data.append(photo_id)
+        return data
     else:print('获取重定向后的url失败')
 
 #将照片写入文件
-def write_to_file(photo_url_download_true,id,page):
+def write_to_file(photo_url_download_true,id,page,number):
     response2 = requests.get(photo_url_download_true)
     if response2.status_code == 200:
         file_path = "e:/Unsplash/" + id + ".jpg"
         with open(file_path, 'wb') as f:
             f.write(response2.content)
-        print('正在下载第%d张照片.....' % (page+1))
-        print(str(page) + id + ".jpg" + '下载成功')
+        print('正在下载第%d张照片.....' % (page*11+number+1))
+        print(id + ".jpg" + '下载成功')
     else:
         print('下载失败')
 
+#计算函数
+def calc():
+    page=(NUMBER_OF_PHOTO -1)// 11
+    number=NUMBER_OF_PHOTO -page*11
+    return [page,number]
+
 #主函数
 def main():
-    for page in range(NUMBER_OF_PHOTO):
-        write_to_file(json_parse(page)[0],json_parse(page)[1],page)
+    for page in range(calc()[0]+1):
+        for number in range(calc()[1]):
+            print('等待下载.....')
+            write_to_file(json_parse(page)[0][number],json_parse(page)[1][number],page,number)
 
 if __name__=='__main__':
     main()
