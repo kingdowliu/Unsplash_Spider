@@ -72,6 +72,5 @@ def main():
         print('等待下载.....')
         write_to_file(json_parse(page)[0][number], json_parse(page)[1][number], page, number)
 
-
 if __name__=='__main__':
     main()
