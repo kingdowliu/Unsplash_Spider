@@ -3,7 +3,7 @@ import requests
 from urllib.parse import urlencode
 
 #需下载的图片的数量
-NUMBER_OF_PHOTO=3
+NUMBER_OF_PHOTO=100
 
 #初始信息
 base_url='https://unsplash.com/napi/photos?'
@@ -51,23 +51,27 @@ def write_to_file(photo_url_download_true,id,page,number):
         file_path = "e:/Unsplash/" + id + ".jpg"
         with open(file_path, 'wb') as f:
             f.write(response2.content)
-        print('正在下载第%d张照片.....' % (page*11+number+1))
+        print('正在下载第%d张照片.....' % (page*12+number+1))
         print(id + ".jpg" + '下载成功')
     else:
         print('下载失败')
 
 #计算函数
 def calc():
-    page=(NUMBER_OF_PHOTO -1)// 11
-    number=NUMBER_OF_PHOTO -page*11
+    page=(NUMBER_OF_PHOTO -1)// 12
+    number=NUMBER_OF_PHOTO -page*12
     return [page,number]
 
 #主函数
 def main():
     for page in range(calc()[0]+1):
-        for number in range(calc()[1]):
+        for count in range(12):
             print('等待下载.....')
-            write_to_file(json_parse(page)[0][number],json_parse(page)[1][number],page,number)
+            write_to_file(json_parse(page)[0][count],json_parse(page)[1][count],page,count)
+    for number in range(calc()[1]):
+        print('等待下载.....')
+        write_to_file(json_parse(page)[0][number], json_parse(page)[1][number], page, number)
+
 
 if __name__=='__main__':
     main()
