@@ -1,9 +1,10 @@
 #encoding='utf-8'
 import requests
 from urllib.parse import urlencode
+import time
 
 #需下载的图片的数量
-NUMBER_OF_PHOTO=100
+NUMBER_OF_PHOTO=5
 
 #初始信息
 base_url='https://unsplash.com/napi/photos?'
@@ -19,7 +20,7 @@ headers={
 #解析一个页面的json
 def json_parse(page):
     params = {
-        'page': str(page + 1),
+        'page': str(page),
         'per_page': '12',
         'order_by': 'latest'
     }
@@ -64,13 +65,17 @@ def calc():
 
 #主函数
 def main():
-    for page in range(calc()[0]+1):
+    pages=calc()[0]
+    numbers=calc()[1]
+    for page in range(pages):
+        print('********************请耐心等待********************')
+        data = json_parse(page)
         for count in range(12):
-            print('等待下载.....')
-            write_to_file(json_parse(page)[0][count],json_parse(page)[1][count],page,count)
-    for number in range(calc()[1]):
-        print('等待下载.....')
-        write_to_file(json_parse(page)[0][number], json_parse(page)[1][number], page, number)
+            write_to_file(data[0][count],data[1][count],page,count)
+    print("********************请耐心等待********************")
+    data=json_parse(pages)
+    for number in range(numbers):
+        write_to_file(data[0][number],data[1][number],pages,number)
 
 if __name__=='__main__':
     main()
