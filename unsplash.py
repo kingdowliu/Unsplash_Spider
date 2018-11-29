@@ -13,8 +13,7 @@ headers={
     'X-Requested-With':'XMLHttpRequest',
     'Referer':'https://unsplash.com/',
     'Host':'unsplash.com',
-    'Connection':'keep-alive',
-    'Cookie':'i=95caba50-1d15-11e8-86e1-73123983863e; xpo=%7B%7D; _sp_id.0295=93dbf183-b5f0-4823-86ab-ed830d4da8a9.1519883914.27.1530416040.1530370938.650ac4ce-9475-4dce-bfd6-0cbd7bf32d02; _ga=GA1.2.2028538097.1519883915; uuid=96d08fb0-5d8e-11e8-825c-715be5f2c2f3; xpos=%7B%7D; _gid=GA1.2.588177965.1530343545; lsnp=bwF3hwmnGWQ; _sp_ses.0295=*; _gat=1'
+    'Connection':'keep-alive'
 }
 
 #解析一个页面的json
